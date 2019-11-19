@@ -1,0 +1,44 @@
+Zeros de Funções Reais
+
+
+Método da Bisseção:
+
+Xn = (a+b)/2
+
+if (f(a)*f(Xn) < 0):
+	b = Xn
+else:
+	a = Xn
+
+
+
+Método da Corda/ Falsa Posição:
+
+Xn = (f(a)*b - f(b)*a) / (f(a)-f(b))
+
+if anterior...
+
+
+
+Método de Newton/Tangente:
+
+Xn+1 = Xn - f(Xn)/f'(Xn+1)
+
+if anterior...
+
+
+
+Critérios de Paragem:
+
+Precisão absoluta: |Xn+1 - Xn| <= Y
+Precisão relativa: (Xn+1 - Xn) / Xn+1 <= Y
+Diferença função:  |f(Xn+1) - f(Xn)| <= Y
+Iterações:	   Fazer y iterações
+
+
+
+
+
+
+
+
