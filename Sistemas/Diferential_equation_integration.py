@@ -246,3 +246,50 @@ def RK2_sistemas(xi,xf,x,y,z,h,f1,f2):
 #RK2_sistemas(0,0.1,0,1,1,0.05,h1,h2)
 #RK2_sistemas(0,0.5,0,1,1,0.05,h1,h2)
 
+'''
+dy/dx = z -> d²y/dx² = dz/dx
+
+Transformar dy/dx em z e d²y/dx² em dz/dx na equação
+
+Sitema com a nova equação e dy/dx = z
+
+d²y/dx² + 3*dy/dx - 2*y = x
+x0 = 0
+xn = 0.5
+(x0,y0,z0) = (0,0,0)
+h = 0.05
+
+Utilizar RK4
+'''
+
+def i1(x,y,z):
+    return z
+
+def i2(x,y,z):
+    return x+2*y-3*z
+
+def RK4(xmin,xmax,x,y,z,f,g,h):
+    for i in range(0, round((xmax - xmin)/h)):
+        dy1 = h*f(x,y,z)
+        dz1 = h*g(x,y,z)
+        dy2 = h*f(x + h/2, y + dy1 / 2, z + dz1/2)
+        dz2 = h*g(x + h/2, y + dy1 / 2, z + dz1/2)
+        dy3 = h*f(x + h/2, y + dy2 / 2, z + dz2/2)
+        dz3 = h*g(x + h/2, y + dy2 / 2, z + dz2/2)
+        dy4 = h*f(x + h, y + dy3, z + dz3/2)
+        dz4 = h*g(x + h, y + dy3, z + dz3/2)
+        y += 1/6*dy1 + 1/3*dy2 + 1/3*dy3 + 1/6*dy4
+        z += 1/6*dz1 + 1/3*dz2 + 1/3*dz3 + 1/6*dz4
+        x += h
+
+    return (y,z)
+
+def RK4_diferential_2(xi,xf,x,y,z,h,f1,f2):
+    s = RK4(xi,xf,x,y,z,f1,f2,h)
+    h /= 2
+    s1 = RK4(xi,xf,x,y,z,f1,f2,h)
+    h /= 2
+    s2 = RK4(xi,xf,x,y,z,f1,f2,h)
+    print((round(s[0],5),round(s[1],5)), (round(s1[0],5),round(s1[1],5)), (round(s2[0],5),round(s2[1],5)), round(QC(s[0],s1[0],s2[0]),5), round(QC(s[1],s1[1],s2[1]),5), round(s1[0] - s2[0],5), round(s1[1] - s2[1],5))
+
+RK4_diferential_2(0,0.5,0,0,0,0.05,i1,i2)
