@@ -110,7 +110,7 @@ def diferential_integration4(xmin,xmax,x,y,f,h,erro):
     s2 = SCalc4(xmin,xmax,x,y,f,h)
     h /= 2
     print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(QC(s,s1,s2),2)))
-    while (abs(QC(s,s1,s2) - 4) > erro):
+    while (abs(QC(s,s1,s2) - 16) > erro):
         contador += 1
         s = s1
         s1 = s2
@@ -161,7 +161,7 @@ def g2(x,y,z):
     return 4 - 0.3*z - 0.1*y
 
 def Euler(xmin,xmax,x,y,z,f,g,h):
-    for i in range(0, int((xmax - xmin)/h) + 1):
+    for i in range(0, round((xmax - xmin)/h)):
         y1 = y + h*f(x,y,z)
         z += h*g(x,y,z)
         y = y1
@@ -169,7 +169,7 @@ def Euler(xmin,xmax,x,y,z,f,g,h):
     return (y,z)
 
 def RK2(xmin,xmax,x,y,z,f,g,h):
-    for i in range(0, int((xmax - xmin)/h) + 1):
+    for i in range(0, round((xmax - xmin)/h)):
         y1 = y + h * f(x + h/2, y + h/2 *  f(x,y,z), z + h/2 * g(x,y,z))
         z += h * g(x + h/2, y + h/2 *  f(x,y,z), z + h/2 * g(x,y,z))
         y = y1
@@ -185,6 +185,8 @@ def dif_int_sistemas(xmin,xmax,x,y,z,f,g,h,erro, Calc):
     s2 = Calc(xmin,xmax,x,y,z,f,g,h)
     h /= 2
     print(str(contador) + '\t  ' + str(s) + '\t  ' + str(s1) + '\t  ' + str(s2) + '\t  ' + str(round(QC(s[0],s1[0],s2[0]),5)) + '\t' + str(round(QC(s[1],s1[1],s2[1]),5)))
+    if (Calc(xmin,xmax,x,y,z,f,g,h) == RK2(xmin,xmax,x,y,z,f,g,h)):
+        erro += 2
     while (abs(QC(s[0],s1[0],s2[0]) - 2) > erro or abs(QC(s[1],s1[1],s2[1]) - 2) > erro):
         contador += 1
         s = s1
@@ -203,4 +205,44 @@ erro = 10**(-2)
 #dif_int_sistemas(xmin,xmax,x,y,z,g1,g2,h,erro, Euler)
 #dif_int_sistemas(xmin,xmax,x,y,z,g1,g2,h,erro, RK2)
 
+'''
+dy/dx = z*y + x
+dz/dx = z*x + y
+(x0,y0,z0) = (0,1,1)
+h = 0.05
+x0 = 0
+
+Aplicar Euler e RK2
+a) Calcular o valor da função em x = 0.1 e x = 0.5
+b) Calcular QC e erro para x = 0.5
+
+'''
+
+def h1(x,y,z):
+    return z*y + x
+
+def h2(x,y,z):
+    return z*x + y
+
+def Euler_sistemas(xi, xf, x,y,z, h, f1, f2):
+    s = Euler(xi,xf,x,y,z,f1,f2,h)
+    h /= 2
+    s1 = Euler(xi,xf,x,y,z,f1,f2,h)
+    h /= 2
+    s2 = Euler(xi,xf,x,y,z,f1,f2,h)
+    print((round(s[0],5),round(s[1],5)), (round(s1[0],5),round(s1[1],5)), (round(s2[0],5),round(s2[1],5)), round(QC(s[0],s1[0],s2[0]),5), round(QC(s[1],s1[1],s2[1]),5), round(s1[0] - s2[0],5), round(s1[1] - s2[1],5))
+
+
+def RK2_sistemas(xi,xf,x,y,z,h,f1,f2):
+    s = RK2(xi,xf,x,y,z,f1,f2,h)
+    h /= 2
+    s1 = RK2(xi,xf,x,y,z,f1,f2,h)
+    h /= 2
+    s2 = RK2(xi,xf,x,y,z,f1,f2,h)
+    print((round(s[0],5),round(s[1],5)), (round(s1[0],5),round(s1[1],5)), (round(s2[0],5),round(s2[1],5)), round(QC(s[0],s1[0],s2[0]),5), round(QC(s[1],s1[1],s2[1]),5), round(s1[0] - s2[0],5), round(s1[1] - s2[1],5))
+
+#Euler_sistemas(0,0.1,0,1,1,0.05,h1,h2)
+#Euler_sistemas(0,0.5,0,1,1,0.05,h1,h2)
+#RK2_sistemas(0,0.1,0,1,1,0.05,h1,h2)
+#RK2_sistemas(0,0.5,0,1,1,0.05,h1,h2)
 
