@@ -59,7 +59,7 @@ def trapezio_iteracoes(left,right,f,n):
     f: função que vai ser integrada
     n: número de divisões da função no intervalo
     """
-    h = (left + right)/n
+    h = (right - left)/n
     area = f(left)
     for i in range(1,n):
         area += 2*f(i*h)
@@ -109,7 +109,7 @@ def simpson_iteracoes(left, right, f, n):
     """Método de Simpson para resolver integrais por iterações
     letf, right: extremos do integral
     f: função que vai ser integrada
-    erro: erro máximo da solução
+    n: número de iterações
     """
     s = f(left)
     h = (right - left) / (2*n)
@@ -143,7 +143,23 @@ def simpson(f,left,right,erro):
         n *= 2
         s2 = simpson_iteracoes(f,left,right,n)
         print("Contador: " + str(contador) + "\tS: " + str(round(s,15)) + "\tS1: " + str(round(s1,15)) + "\tS2: " + str(round(s2,15)))
-        
+
+
+def Simpson_duplo(xleft,xright,yleft,yright,f,n):
+    """Método de Simpson para resolver integrais por iterações
+    xletf, xright: extremos do integral de x
+    yleft, yright: extremos do integral de y
+    f: função que vai ser integrada
+    n: número de iterações
+    """
+    hx = (xright - xleft) / 2
+    hy = (yright - yleft) / 2
+    s = 0
+    s += f(0,0) + f(xright,0) + f(0, yright) + f(xright,yright)
+    s += 4*(f(yleft,yleft + hy) + f(xleft + hx,yleft) + f(xleft + hx,yright) + f(xright,yleft + hy))
+    s += 16*(f(xleft + hx,yleft + hy))
+    s = s*hx*hy/9
+    return s
 
 # RESOLUÇÃO DE EQUAÇÕES DIFERENCIAIS
 
