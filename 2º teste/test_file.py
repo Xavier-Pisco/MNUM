@@ -170,7 +170,7 @@ def Euler(xmin,xmax,x,y,f,h):
     f: função para diferenciar
     h: distância entre dois pontos
     """
-    for i in range(0, int((xmax - xmin)/h) + 1):
+    for i in range(0, round((xmax-xmin)/h)):
         y += h*f(x,y)
         x += h
 
@@ -184,7 +184,7 @@ def RK2(xmin,xmax,x,y,f,h):
     f: função para diferenciar
     h: distância entre dois pontos
     """
-    for i in range(0, int((xmax - xmin)/h) + 1):
+    for i in range(0, round((xmax - xmin)/h)):
         y += h * f(x+h/2, y + h/2*f(x,y))
         x += h
 
@@ -197,7 +197,7 @@ def RK4(xmin,xmax,x,y,f,h):
     f: função para diferenciar
     h: distância entre dois pontos
     """
-    for i in range(0, int((xmax - xmin)/h) + 1):
+    for i in range(0, round((xmax - xmin)/h)):
         dy1 = h*f(x,y)
         dy2 = h*f(x + h/2, y + dy1 / 2)
         dy3 = h*f(x + h/2, y + dy2 / 2)
@@ -225,20 +225,20 @@ def diferential(xmin,xmax,x,y,f,h, erro, Calc):
 
     s2 = Calc(xmin,xmax,x,y,f,h)
     h /= 2
-    if (Calc(x,y) == Euler):
+    if (Calc(xmin,xmax,x,y,f,h) == Euler(xmin,xmax,x,y,f,h)):
         value = 2
-    elif (Calc(x,y) == RK2(x,y)):
+    elif (Calc(xmin,xmax,x,y,f,h) == RK2(xmin,xmax,x,y,f,h)):
         value = 4
-    elif (Calc(x,y) == RK4(x,y)):
+    elif (Calc(xmin,xmax,x,y,f,h) == RK4(xmin,xmax,x,y,f,h)):
         value = 16
-    print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(QC(s,s1,s2),2)))
+    print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(QC(s,s1,s2),5)))
     while(abs(QC(s,s1,s2) - value) > erro):
         contador += 1
         s = s1
         s1 = s2
         s2 = Calc(xmin,xmax,x,y,f,h)
         h /= 2
-        print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(QC(s,s1,s2),2)))
+        print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(QC(s,s1,s2),5)))
 
 # MESMO MAS PARA SISTEMA DE 3 EQUAÇÕES DIFERENCIAIS
 
@@ -353,4 +353,5 @@ def diferential_2(xi,xf,x,y,z,f,g,h,Calc):
     h /= 2
     s2 = Calc(xi,xf,x,y,z,f1,f2,h)
     print((round(s[0],5),round(s[1],5)), (round(s1[0],5),round(s1[1],5)), (round(s2[0],5),round(s2[1],5)), round(QC(s[0],s1[0],s2[0]),5), round(QC(s[1],s1[1],s2[1]),5), round(s1[0] - s2[0],5), round(s1[1] - s2[1],5))
+
 
