@@ -105,6 +105,23 @@ def trapezio_qc(left, right, f, erro):
         s2 = (s2 + f(right)) * h/2
         print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\tQC: ' + str(QC(s,s1,s2)))
 
+# trapézios duplo, hx*hy/4 * (sum0 + 2*sum1 + 4*sum2)
+def trapezio_duplo(xleft,xright, yleft,yright, f):
+    """Método do trapézio para resolver integrais duplos de tamanho 2x2
+    xletf, xright: extremos do integral de x
+    yleft, yright: extremos do integral de y
+    f: função que vai ser integrada
+    """
+    hx = (xright - xleft) / 2
+    hy = (yright - yleft) / 2
+    s = 0
+    s += f(0,0) + f(xright,0) + f(0, yright) + f(xright,yright)
+    s += 2*(f(yleft,yleft + hy) + f(xleft + hx,yleft) + f(xleft + hx,yright) + f(xright,yleft + hy))
+    s += 4*(f(xleft + hx,yleft + hy))
+    s = s*hx*hy/4
+    return s
+
+
 
 def simpson_iteracoes(left, right, f, n):
     """Método de Simpson para resolver integrais por iterações
@@ -146,12 +163,11 @@ def simpson(left,right,f,erro):
         print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\tQC: ' + str(QC(s,s1,s2)))
 
 
-def Simpson_duplo(xleft,xright,yleft,yright,f,n):
-    """Método de Simpson para resolver integrais por iterações
+def Simpson_duplo(xleft,xright,yleft,yright,f):
+    """Método de Simpson para resolver integrais duplos de tamanho 2x2
     xletf, xright: extremos do integral de x
     yleft, yright: extremos do integral de y
     f: função que vai ser integrada
-    n: número de iterações
     """
     hx = (xright - xleft) / 2
     hy = (yright - yleft) / 2
@@ -161,6 +177,7 @@ def Simpson_duplo(xleft,xright,yleft,yright,f,n):
     s += 16*(f(xleft + hx,yleft + hy))
     s = s*hx*hy/9
     return s
+
 
 # RESOLUÇÃO DE EQUAÇÕES DIFERENCIAIS
 
@@ -333,15 +350,15 @@ def RK4_2(xmin,xmax,x,y,z,f,g,h):
         dz2 = h*g(x + h/2, y + dy1 / 2, z + dz1/2)
         dy3 = h*f(x + h/2, y + dy2 / 2, z + dz2/2)
         dz3 = h*g(x + h/2, y + dy2 / 2, z + dz2/2)
-        dy4 = h*f(x + h, y + dy3, z + dz3/2)
-        dz4 = h*g(x + h, y + dy3, z + dz3/2)
+        dy4 = h*f(x + h, y + dy3, z + dz3)
+        dz4 = h*g(x + h, y + dy3, z + dz3)
         y += 1/6*dy1 + 1/3*dy2 + 1/3*dy3 + 1/6*dy4
         z += 1/6*dz1 + 1/3*dz2 + 1/3*dz3 + 1/6*dz4
         x += h
     return (y,z)
 
 def diferential_2(xi,xf,x,y,z,f,g,h,Calc):
-    """Cálculo de sistemas diferenciais de 1ª ordem, 3 iterações
+    """Cálculo de sistemas diferenciais de 2ª ordem, 3 iterações
     xmin, xmax: x menor e x maior
     x,y,z: X0, Y0 e Z0
     f,g: funções para diferenciar
@@ -353,5 +370,4 @@ def diferential_2(xi,xf,x,y,z,f,g,h,Calc):
     s1 = Calc(xi,xf,x,y,z,f,g,h)
     h /= 2
     s2 = Calc(xi,xf,x,y,z,f,g,h)
-    print("S:",(round(s[0],5),round(s[1],5)),"\tS1:", (round(s1[0],5),round(s1[1],5)),"\tS2:", (round(s2[0],5),round(s2[1],5)),"\tYQC:", round(QC(s[0],s1[0],s2[0]),5), "\tZQC:", round(QC(s[1],s1[1],s2[1]),5),"\tErro y:", round(s1[0] - s2[0],5),"\tErro z:", round(s1[1] - s2[1],5))
-
+    print("S:",(round(s[0],5),round(s[1],5)),"\tS1:", (round(s1[0],5),round(s1[1],5)),"\tS2:", (round(s2[0],5),round(s2[1],5)),"\tYQC:", round(QC(s[0],s1[0],s2[0]),5), "\tZQC:", round(QC(s[1],s1[1],s2[1]),5), "\tErroY: ", round((s2[0]-s1[0])/15,10), "\tErroZ: ", round((s2[1]-s1[1])/15,10))

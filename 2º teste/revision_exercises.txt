@@ -1,0 +1,75 @@
+Exercício 4:
+
+d²y / dx² + 0.6 * dy/dx + 8*y = 0
+y(0) = 4
+y'(0) = 0
+Intervalo -> [0,0.5]
+h = 0.1
+Calc QC e Erro para x = 0.1 e x = 0.5 pelo método de RK4
+
+Solução:
+x = 0.1 / QCY = 13.13   ErroY = -1.287*10**(-7)
+x = 0.5 / QCY = 16.36   ErroY = -1.023*10**(-7)
+
+
+Exercício 7:
+
+4*x - y + 2*z = 20
+8*y + 2*z = 25 -x
+3*x - y + 5*z = -10
+a) Resolver por Khaletsky
+b) Gauss-Jacobi, com (x0,y0,z0) = (0,0,0) ao fim de 5 iterações
+c) Gauss-Seidel, com    "                                  "
+
+Solução:
+a) x = 9.359    y = 3.675   z = -6.880
+b) x = 8.919    y = 3.575   z = -6.446
+c) x = 9.300    y = 3.659   z = -6.848
+
+
+Outro Exercício:
+integral(1 -> 5) e**(x-2)/x
+
+            Trapézios           Simpson
+            n       s           n       s
+h=
+h'=
+h''=
+
+Solução:
+            Trapézios           Simpson
+            n       s           n       s
+h =1        4      3.966        4      3.183
+h'=*0.5*    8      3.379        8      3.076
+h''=0.25    16     3.152        16     3.069
+
+
+
+Mais um Exercício:
+dx/dy = x*y**2 - 1.1*x
+*Trocar x com y e resolver e depois retrocar para voltar ao normal*
+Euler em [0,2.4]
+
+0   1.0
+.   0.78
+.   0.61
+.   0.50
+.   0.43
+.   0.39
+.   0.38
+.   0.40
+.   0.47
+.   0.61
+.   0.87
+.   1.38
+2.4 2.41
+
+a) Qual o passo de integração
+b) Considerando esse passo h'', repita o cálculo para h' e h
+c) QC e erro?
+
+
+Solução:
+a) 0.2
+b) S = 0.16442; 1.10828; 2.41333
+c) QC = 0.72324  Erro = 1.3
