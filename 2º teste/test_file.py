@@ -92,8 +92,9 @@ def trapezio_qc(left, right, f, erro):
     for i in range(1,n):
         s2 += 2*f(i*h)
     s2 = (s2 + f(right)) * h/2
-    print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)))
+    print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\tQC: ' + str(QC(s,s1,s2)))
     while (abs(abs((s1-s)/(s2-s1)) - 4) > erro):
+        contador += 1
         s = s1
         s1 = s2
         s2 = f(left)
@@ -102,7 +103,7 @@ def trapezio_qc(left, right, f, erro):
         for i in range(1,n):
             s2 += 2*f(i*h)
         s2 = (s2 + f(right)) * h/2
-        print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)))
+        print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\tQC: ' + str(QC(s,s1,s2)))
 
 
 def simpson_iteracoes(left, right, f, n):
@@ -121,7 +122,7 @@ def simpson_iteracoes(left, right, f, n):
     s = (s + f(right)) * h/3
     return s
 
-def simpson(f,left,right,erro):
+def simpson(left,right,f,erro):
     """Método de Simpson para resolver integrais por QC
     letf, right: extremos do integral
     f: função que vai ser integrada
@@ -130,19 +131,19 @@ def simpson(f,left,right,erro):
     contador = 1
     n = 1
     n *= 2
-    s = simpson_iteracoes(f,left,right,n)
+    s = simpson_iteracoes(left,right,f,n)
     n *= 2
-    s1 = simpson_iteracoes(f,left,right,n)
+    s1 = simpson_iteracoes(left,right,f,n)
     n *= 2
-    s2 = simpson_iteracoes(f,left,right,n)
-    print("Contador: " + str(contador) + "\tS: " + str(round(s,15)) + "\tS1: " + str(round(s1,15)) + "\tS2: " + str(round(s2,15)))
+    s2 = simpson_iteracoes(left,right,f,n)
+    print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\t  QC: ' + str(QC(s,s1,s2)))
     while (abs(abs((s1-s)/(s2-s1)) - 16) > erro):
         contador += 1
         s = s1
         s1 = s2
         n *= 2
-        s2 = simpson_iteracoes(f,left,right,n)
-        print("Contador: " + str(contador) + "\tS: " + str(round(s,15)) + "\tS1: " + str(round(s1,15)) + "\tS2: " + str(round(s2,15)))
+        s2 = simpson_iteracoes(left,right,f,n)
+        print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\tQC: ' + str(QC(s,s1,s2)))
 
 
 def Simpson_duplo(xleft,xright,yleft,yright,f,n):
@@ -347,11 +348,10 @@ def diferential_2(xi,xf,x,y,z,f,g,h,Calc):
     h: distância entre dois pontos
     Calc: método para utilizar
     """
-    s = Calc(xi,xf,x,y,z,f1,f2,h)
+    s = Calc(xi,xf,x,y,z,f,g,h)
     h /= 2
-    s1 = Calc(xi,xf,x,y,z,f1,f2,h)
+    s1 = Calc(xi,xf,x,y,z,f,g,h)
     h /= 2
-    s2 = Calc(xi,xf,x,y,z,f1,f2,h)
-    print((round(s[0],5),round(s[1],5)), (round(s1[0],5),round(s1[1],5)), (round(s2[0],5),round(s2[1],5)), round(QC(s[0],s1[0],s2[0]),5), round(QC(s[1],s1[1],s2[1]),5), round(s1[0] - s2[0],5), round(s1[1] - s2[1],5))
-
+    s2 = Calc(xi,xf,x,y,z,f,g,h)
+    print("S:",(round(s[0],5),round(s[1],5)),"\tS1:", (round(s1[0],5),round(s1[1],5)),"\tS2:", (round(s2[0],5),round(s2[1],5)),"\tYQC:", round(QC(s[0],s1[0],s2[0]),5), "\tZQC:", round(QC(s[1],s1[1],s2[1]),5),"\tErro y:", round(s1[0] - s2[0],5),"\tErro z:", round(s1[1] - s2[1],5))
 

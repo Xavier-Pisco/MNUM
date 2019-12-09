@@ -116,7 +116,7 @@ def simpson(f,left,right,erro):
         
 erro = 10**(-2)
 
-#print("s: " + str(simpson_iteracoes(g,0,math.pi, 16)))
+#print(simpson_iteracoes(g,0,math.pi, 16))
 #simpson(g,0,math.pi,erro)
 
 def f(x,y):
@@ -132,7 +132,7 @@ def Simpson3D(f,xleft,xright,yleft,yright):
     s = s*hx*hy/9
     return s
 
-print("s: " + str(Simpson3D(f,0,math.pi/2,0,math.pi/2)))
+#print("s: " + str(Simpson3D(f,0,math.pi/2,0,math.pi/2)))
 
 
 '''

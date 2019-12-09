@@ -126,7 +126,7 @@ h = 0.1
 erro = 10**(-2)
 #diferential_integration(xmin,xmax,x,y,f,h,erro)
 #diferential_integration2(xmin,xmax,x,y,f,h,erro)
-#diferential_integration4(xmin,xmax,x,y,f,h,erro) #NOT WORKING
+#diferential_integration4(xmin,xmax,x,y,f,h,0.5)
 
 
 '''
@@ -292,4 +292,4 @@ def RK4_diferential_2(xi,xf,x,y,z,h,f1,f2):
     s2 = RK4(xi,xf,x,y,z,f1,f2,h)
     print((round(s[0],5),round(s[1],5)), (round(s1[0],5),round(s1[1],5)), (round(s2[0],5),round(s2[1],5)), round(QC(s[0],s1[0],s2[0]),5), round(QC(s[1],s1[1],s2[1]),5), round(s1[0] - s2[0],5), round(s1[1] - s2[1],5))
 
-RK4_diferential_2(0,0.5,0,0,0,0.05,i1,i2)
+#RK4_diferential_2(0,0.5,0,0,0,0.05,i1,i2)
