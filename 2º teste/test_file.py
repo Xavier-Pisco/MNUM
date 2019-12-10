@@ -62,7 +62,7 @@ def trapezio_iteracoes(left,right,f,n):
     h = (right - left)/n
     area = f(left)
     for i in range(1,n):
-        area += 2*f(i*h)
+        area += 2*f(left + i*h)
     area += f(right)
     area = area * h / 2
     print("Area: " + str(area))
@@ -80,17 +80,17 @@ def trapezio_qc(left, right, f, erro):
     s1 = f(left)
     s2 = f(left)
     for i in range(1,n):
-        s += 2*f(i*h)
+        s += 2*f(left + i*h)
     s = (s + f(right))* h/2
     n *= 2
     h = (right - left) / n
     for i in range(1,n):
-        s1 += 2*f(i*h)
+        s1 += 2*f(left + i*h)
     s1 = (s1 + f(right))* h/2
     n *= 2
     h = (right - left) / n
     for i in range(1,n):
-        s2 += 2*f(i*h)
+        s2 += 2*f(left + i*h)
     s2 = (s2 + f(right)) * h/2
     print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\tQC: ' + str(QC(s,s1,s2)))
     while (abs(abs((s1-s)/(s2-s1)) - 4) > erro):
@@ -101,7 +101,7 @@ def trapezio_qc(left, right, f, erro):
         n *= 2
         h = (right - left) / n
         for i in range(1,n):
-            s2 += 2*f(i*h)
+            s2 += 2*f(left + i*h)
         s2 = (s2 + f(right)) * h/2
         print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\tQC: ' + str(QC(s,s1,s2)))
 
@@ -133,9 +133,9 @@ def simpson_iteracoes(left, right, f, n):
     h = (right - left) / (2*n)
     for i in range(1,2*n):
         if (i%2 == 0):
-            s += 2*f(i*h)
+            s += 2*f(left + i*h)
         else:
-            s += 4*f(i*h)
+            s += 4*f(left + i*h)
     s = (s + f(right)) * h/3
     return s
 
@@ -258,7 +258,7 @@ def diferential(xmin,xmax,x,y,f,h, erro, Calc):
         h /= 2
         print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(QC(s,s1,s2),5)))
 
-# MESMO MAS PARA SISTEMA DE 3 EQUAÇÕES DIFERENCIAIS
+# MESMO MAS PARA SISTEMA DE 2 EQUAÇÕES DIFERENCIAIS
 
 def Euler_sistemas(xmin,xmax,x,y,z,f,g,h):
     for i in range(0, round((xmax - xmin)/h)):
