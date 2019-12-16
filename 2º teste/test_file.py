@@ -62,7 +62,7 @@ def trapezio_iteracoes(left,right,f,n):
     h = (right - left)/n
     area = f(left)
     for i in range(1,n):
-        area += 2*f(i*h)
+        area += 2*f(round(left + i*h,2))
     area += f(right)
     area = area * h / 2
     print("Area: " + str(area))
@@ -80,17 +80,17 @@ def trapezio_qc(left, right, f, erro):
     s1 = f(left)
     s2 = f(left)
     for i in range(1,n):
-        s += 2*f(i*h)
+        s += 2*f(round(left + i*h,2))
     s = (s + f(right))* h/2
     n *= 2
     h = (right - left) / n
     for i in range(1,n):
-        s1 += 2*f(i*h)
+        s1 += 2*f(round(left + i*h,2))
     s1 = (s1 + f(right))* h/2
     n *= 2
     h = (right - left) / n
     for i in range(1,n):
-        s2 += 2*f(i*h)
+        s2 += 2*f(round(left + i*h,2))
     s2 = (s2 + f(right)) * h/2
     print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\tQC: ' + str(QC(s,s1,s2)))
     while (abs(abs((s1-s)/(s2-s1)) - 4) > erro):
@@ -101,7 +101,7 @@ def trapezio_qc(left, right, f, erro):
         n *= 2
         h = (right - left) / n
         for i in range(1,n):
-            s2 += 2*f(i*h)
+            s2 += 2*f(round(left + i*h,2))
         s2 = (s2 + f(right)) * h/2
         print("Contador: " + str(contador) + "\tS: " + str(round(s,7)) + "\tS1: " + str(round(s1,7)) + "\tS2: " + str(round(s2,7)) + '\tQC: ' + str(QC(s,s1,s2)))
 
@@ -133,9 +133,9 @@ def simpson_iteracoes(left, right, f, n):
     h = (right - left) / (2*n)
     for i in range(1,2*n):
         if (i%2 == 0):
-            s += 2*f(i*h)
+            s += 2*f(round(left + i*h,2))
         else:
-            s += 4*f(i*h)
+            s += 4*f(round(left + i*h,2))
     s = (s + f(right)) * h/3
     return s
 
@@ -258,7 +258,7 @@ def diferential(xmin,xmax,x,y,f,h, erro, Calc):
         h /= 2
         print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(QC(s,s1,s2),5)))
 
-# MESMO MAS PARA SISTEMA DE 3 EQUAÇÕES DIFERENCIAIS
+# MESMO MAS PARA SISTEMA DE 2 EQUAÇÕES DIFERENCIAIS
 
 def Euler_sistemas(xmin,xmax,x,y,z,f,g,h):
     for i in range(0, round((xmax - xmin)/h)):
@@ -284,8 +284,8 @@ def RK4_sistemas(xmin,xmax,x,y,z,f,g,h):
         dz2 = h*g(x + h/2, y + dy1 / 2, z + dz1/2)
         dy3 = h*f(x + h/2, y + dy2 / 2, z + dz2/2)
         dz3 = h*g(x + h/2, y + dy2 / 2, z + dz2/2)
-        dy4 = h*f(x + h, y + dy3, z + dz3/2)
-        dz4 = h*g(x + h, y + dy3, z + dz3/2)
+        dy4 = h*f(x + h, y + dy3, z + dz3)
+        dz4 = h*g(x + h, y + dy3, z + dz3)
         y += 1/6*dy1 + 1/3*dy2 + 1/3*dy3 + 1/6*dy4
         z += 1/6*dz1 + 1/3*dz2 + 1/3*dz3 + 1/6*dz4
         x += h
@@ -371,3 +371,16 @@ def diferential_2(xi,xf,x,y,z,f,g,h,Calc):
     h /= 2
     s2 = Calc(xi,xf,x,y,z,f,g,h)
     print("S:",(round(s[0],5),round(s[1],5)),"\tS1:", (round(s1[0],5),round(s1[1],5)),"\tS2:", (round(s2[0],5),round(s2[1],5)),"\tYQC:", round(QC(s[0],s1[0],s2[0]),5), "\tZQC:", round(QC(s[1],s1[1],s2[1]),5), "\tErroY: ", round((s2[0]-s1[0])/15,10), "\tErroZ: ", round((s2[1]-s1[1])/15,10))
+
+
+xtmp = x = 2.83865
+ytmp = y = 2.22131
+ztmp = z = 4.17630
+wtmp = w = -3.84236
+
+x = (25-0.5*y-3*z-0.25*w)/6
+y = (10 - 1.2*x - 0.25*z - 0.2*w)/3
+z = (7 + x - 0.25*y -2*w)/4
+w = (-12 - 2*x - 4*y - z)/8
+
+print(x,y,z,w)
