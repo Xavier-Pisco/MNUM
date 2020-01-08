@@ -7,6 +7,9 @@ import math
 def qc(s,s1,s2):
     return abs((s1 - s)/(s2 - s1))
 
+def determinante(x,y,fx, fy, gx, gy):
+    return fx(x,y)*gy(x,y) - fy(x,y)*gx(x,y)
+
 
 '''
 ------------------ENCONTRAR ZEROS DE FUNÇÕES E SISTEMAS DE 2 EQUAÇÕES------------
@@ -187,11 +190,11 @@ def trapezio(a, b, f, n):
     n: número de divisões da função no intervalo
     return: area
     """
-    h = (a - b)/n
-    area = f(b)
+    h = (b - a)/n
+    area = f(a)
     for i in range(1,n):
-        area += 2*f(round(b + i*h,2))
-    area += f(a)
+        area += 2*f(round(a + i*h,2))
+    area += f(b)
     area = area * h / 2
     return area
 
@@ -317,14 +320,14 @@ def diferential(xmin,xmax,x,y,f,h, n, Calc):
 
     s2 = Calc(xmin,xmax,x,y,f,h)
     h /= 2
-    print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(QC(s,s1,s2),5)))
+    print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(qc(s,s1,s2),5)))
     for i in range(n):
         contador += 1
         s = s1
         s1 = s2
         s2 = Calc(xmin,xmax,x,y,f,h)
         h /= 2
-        print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(QC(s,s1,s2),5)))
+        print(str(contador) + '\t  ' + str(round(s,5)) + '\t  ' + str(round(s1,5)) + '\t  ' + str(round(s2,5)) + '\t  ' + str(round(qc(s,s1,s2),5)))
     return (s,s1,s2)
 
 def Euler_sistemas(xmin,xmax,x,y,z,f,g,h):
@@ -377,12 +380,152 @@ def diferential_sistemas(xmin,xmax,x,y,z,f,g,h,n, Calc):
     h /= 2
     s2 = Calc(xmin,xmax,x,y,z,f,g,h)
     h /= 2
-    print(str(contador) + '\t  ' + str(s) + '\t  ' + str(s1) + '\t  ' + str(s2) + '\t  ' + str(round(QC(s[0],s1[0],s2[0]),5)) + '\t' + str(round(QC(s[1],s1[1],s2[1]),5)))
+    print(str(contador) + '\t  ' + str(s) + '\t  ' + str(s1) + '\t  ' + str(s2) + '\t  ' + str(round(qc(s[0],s1[0],s2[0]),5)) + '\t' + str(round(qc(s[1],s1[1],s2[1]),5)))
     for i in range(n):
         contador += 1
         s = s1
         s1 = s2
         s2 = Calc(xmin,xmax,x,y,z,f,g,h)
         h /= 2
-        print(str(contador) + '\t  ' + str(s) + '\t  ' + str(s1) + '\t  ' + str(s2) + '\t  ' + str(round(QC(s[0],s1[0],s2[0]),5)) + '\t' + str(round(QC(s[1],s1[1],s2[1]),5)))
+        print(str(contador) + '\t  ' + str(s) + '\t  ' + str(s1) + '\t  ' + str(s2) + '\t  ' + str(round(qc(s[0],s1[0],s2[0]),5)) + '\t' + str(round(qc(s[1],s1[1],s2[1]),5)))
     return (s,s1,s2)
+
+
+'''
+-------------------OTIMIZAÇÃO----------------------
+'''
+
+
+def otimizacao_unidimensional(x1,x2,erro,min):
+    """ Encontrar o mínimo/máximo de uma função
+    x1,x2: min e máx do intervalo
+    n: número de iterações
+    min: True se for o minímo, False se for o máximo
+    print: x, f(x)
+    return x
+    """
+    contador = 0
+    number = (sqrt(5)-1)/2
+    x3 = x1 + number**2 * (x2 - x1)
+    x4 = x1 + number * (x2 - x1)
+    for i in range(n):
+        contador += 1
+        if (min == True):
+            if (f(x3) < f(x4)): 
+                x2 = x4
+            else:
+                x1 = x3
+        else:
+            if (f(x3) > f(x4)): 
+                x2 = x4
+            else:
+                x1 = x3
+
+        x3 = x1 + number**2 * (x2 - x1)
+        x4 = x1 + number * (x2 - x1)
+    if (min == True):
+        if (f(x1) < f(x2)):
+            print(x1,f(x1))
+            return x1
+        else:
+            print(x2,f(x2))
+            return x2
+    else:
+        if (f(x1) > f(x2)):
+            print(x1,f(x1))
+            return x1
+        else:
+            print(x2,f(x2))
+            return x2
+
+
+def gradiente(x,y,f,fx,fy,h,n):
+    """ Encontrar o mínimo de uma função de duas variáveis
+    x, y: ponto inicial
+    f: função
+    fx: derivada em ordem a x
+    fy: derivada em ordem a y
+    h: lambda
+    n: número de iterações
+    print: contador, x, y
+    return: valor da função em x,y
+    """
+    contador = 1
+    x1 = x - h*fx(x,y)
+    y1 = y - h*fy(x,y)
+    print(contador, x1, y1)
+    for i in range(n - 1):
+        if (f(x1,y1) < f(x,y)):
+            h *= 2
+            x = x1
+            y = y1
+        else:
+            h /= 2
+
+        x1 = x - h*fx(x,y)
+        y1 = y - h*fy(x,y)
+        contador += 1
+        print(contador, x1, y1)
+    return w(x1,y1)
+
+
+def quadrica(x,y,f,fx,fy,fxx,fxy,fyx,fyy,n):
+    """ Encontrar o mínimo de uma função de duas variáveis
+    x, y: ponto inicial
+    n: número de iterações
+    f: função
+    fx: derivada em ordem a x
+    fy: derivada em ordem a y
+    fxx,fxy,fyx,fyy: segundas derivadas
+    print: contador, x, y
+    return: valor da função em x,y
+    """
+    contador = 1
+    x1 = x - 1/determinante(x,y,fxx,fxy,fyx,fyy) * fx(x,y)
+    y1 = y - 1/determinante(x,y,fxx,fxy,fyx,fyy) * fy(x,y)
+    for i in range(n):
+        x = x1
+        y = y1
+        x1 = x - 1/determinante(x,y,fxx,fxy,fyx,fyy) * fx(x,y)
+        y1 = y - 1/determinante(x,y,fxx,fxy,fyx,fyy) * fy(x,y)
+        print(contador, x1, y1)
+    return w(x1,y1)
+
+
+def lm(x,y,f,fx,fy,fxx,fxy,fyx,fyy,n,a, delta):
+    """ Encontrar o mínimo de uma função de duas variáveis
+    x, y: ponto inicial
+    f: função
+    fx: derivada em ordem a x
+    fy: derivada em ordem a y
+    fxx,fxy,fyx,fyy: segundas derivadas
+    n: número de iterações
+    a, delta: don't really know
+    print: contador, x, y
+    return: valor da função em (x,y)
+    """
+    contador = 1
+    x1 = x - (a*fx(x,y) + 1/determinante(x,y,fxx,fxy,fyx,fyy)*fx(x,y))
+    y1 = y - (a*fy(x,y) + 1/determinante(x,y,fxx,fxy,fyx,fyy)*fy(x,y))
+    for i in range(n):
+        if (f(x1,y1) > f(x,y)):
+            a += delta
+        else:
+            a -= delta
+        x = x1
+        y = y1
+        x1 = x - (a*fx(x,y) + 1/determinante(x,y,fxx,fxy,fyx,fyy)*fx(x,y))
+        y1 = y - (a*fy(x,y) + 1/determinante(x,y,fxx,fxy,fyx,fyy)*fy(x,y))
+        print(contador, x1, y1)
+    return w(x1,y1)
+
+
+def f(x):
+    return math.sqrt(1+(1.5*math.exp(1.5*x))**2)
+
+s=simpson_iteracoes(0,2,f,4)
+s1=simpson_iteracoes(0,2,f,8)
+s2=simpson_iteracoes(0,2,f,12)
+
+print(s,s1,s2)
+print(qc(s,s1,s2))
