@@ -193,7 +193,7 @@ def trapezio(a, b, f, n):
     h = (b - a)/n
     area = f(a)
     for i in range(1,n):
-        area += 2*f(round(a + i*h,2))
+        area += 2*f(round(a + i*h,7))
     area += f(b)
     area = area * h / 2
     return area
@@ -223,12 +223,12 @@ def simpson_iteracoes(left, right, f, n):
     return: solução
     """
     s = f(left)
-    h = (right - left) / (2*n)
-    for i in range(1,2*n):
+    h = (right - left) / (n)
+    for i in range(1,n):
         if (i%2 == 0):
-            s += 2*f(round(left + i*h,2))
+            s += 2*f(round(left + i*h,7))
         else:
-            s += 4*f(round(left + i*h,2))
+            s += 4*f(round(left + i*h,7))
     s = (s + f(right)) * h/3
     return s
 
@@ -359,7 +359,7 @@ def RK4_sistemas(xmin,xmax,x,y,z,f,g,h):
         y += 1/6*dy1 + 1/3*dy2 + 1/3*dy3 + 1/6*dy4
         z += 1/6*dz1 + 1/3*dz2 + 1/3*dz3 + 1/6*dz4
         x += h
-
+        print(x,y)
     return (y,z)
 
 
@@ -396,7 +396,7 @@ def diferential_sistemas(xmin,xmax,x,y,z,f,g,h,n, Calc):
 '''
 
 
-def otimizacao_unidimensional(x1,x2,erro,min):
+def otimizacao_unidimensional(x1,x2,n,min):
     """ Encontrar o mínimo/máximo de uma função
     x1,x2: min e máx do intervalo
     n: número de iterações
@@ -405,7 +405,7 @@ def otimizacao_unidimensional(x1,x2,erro,min):
     return x
     """
     contador = 0
-    number = (sqrt(5)-1)/2
+    number = (math.sqrt(5)-1)/2
     x3 = x1 + number**2 * (x2 - x1)
     x4 = x1 + number * (x2 - x1)
     for i in range(n):
@@ -423,6 +423,9 @@ def otimizacao_unidimensional(x1,x2,erro,min):
 
         x3 = x1 + number**2 * (x2 - x1)
         x4 = x1 + number * (x2 - x1)
+        print(x1,x2,x3,x4)
+        print(f(x1),f(x2),f(x3),f(x4))
+        print()
     if (min == True):
         if (f(x1) < f(x2)):
             print(x1,f(x1))
@@ -466,7 +469,7 @@ def gradiente(x,y,f,fx,fy,h,n):
         y1 = y - h*fy(x,y)
         contador += 1
         print(contador, x1, y1)
-    return w(x1,y1)
+    return f(x1,y1)
 
 
 def quadrica(x,y,f,fx,fy,fxx,fxy,fyx,fyy,n):
@@ -489,7 +492,7 @@ def quadrica(x,y,f,fx,fy,fxx,fxy,fyx,fyy,n):
         x1 = x - 1/determinante(x,y,fxx,fxy,fyx,fyy) * fx(x,y)
         y1 = y - 1/determinante(x,y,fxx,fxy,fyx,fyy) * fy(x,y)
         print(contador, x1, y1)
-    return w(x1,y1)
+    return f(x1,y1)
 
 
 def lm(x,y,f,fx,fy,fxx,fxy,fyx,fyy,n,a, delta):
@@ -517,15 +520,5 @@ def lm(x,y,f,fx,fy,fxx,fxy,fyx,fyy,n,a, delta):
         x1 = x - (a*fx(x,y) + 1/determinante(x,y,fxx,fxy,fyx,fyy)*fx(x,y))
         y1 = y - (a*fy(x,y) + 1/determinante(x,y,fxx,fxy,fyx,fyy)*fy(x,y))
         print(contador, x1, y1)
-    return w(x1,y1)
+    return f(x1,y1)
 
-
-def f(x):
-    return math.sqrt(1+(1.5*math.exp(1.5*x))**2)
-
-s=simpson_iteracoes(0,2,f,4)
-s1=simpson_iteracoes(0,2,f,8)
-s2=simpson_iteracoes(0,2,f,12)
-
-print(s,s1,s2)
-print(qc(s,s1,s2))
